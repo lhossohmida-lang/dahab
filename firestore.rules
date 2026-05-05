@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Products: any authenticated user can read
+    match /products/{docId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    // Sales, expenses, settings: admin only
+    match /sales/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /expenses/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /settings/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Customers: admin can do everything, customer can read/update own doc
+    match /customers/{docId} {
+      allow read, write: if isAdmin();
+      allow read, update: if request.auth != null && request.auth.uid == docId;
+    }
+
+    // Users: anyone can create (registration), user can read/update own, admin reads all
+    match /users/{userId} {
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow read, update: if request.auth != null && request.auth.uid == userId;
+      allow read: if isAdmin();
+    }
+
+    // Online orders: admin full access, customer can create and read own
+    match /onlineOrders/{docId} {
+      allow read, write: if isAdmin();
+      allow create: if request.auth != null;
+      allow read: if request.auth != null && resource.data.customerId == request.auth.uid;
+    }
+
+    function isAdmin() {
+      return request.auth != null
+        && (!exists(/databases/$(database)/documents/users/$(request.auth.uid))
+            || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role != 'customer');
+    }
+  }
+}
