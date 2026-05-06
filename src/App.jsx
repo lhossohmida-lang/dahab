@@ -21,13 +21,11 @@ import StoreLogin from './pages/store/StoreLogin';
 import StoreRegister from './pages/store/StoreRegister';
 import MyOrders from './pages/store/MyOrders';
 import Account from './pages/store/Account';
-import InstallAppButton from './components/InstallAppButton';
 import { CartProvider } from './contexts/CartContext';
 
 export default function App() {
   return (
-    <>
-      <Routes>
+    <Routes>
         {/* Admin Login */}
         <Route path="/login" element={<Login />} />
 
@@ -76,8 +74,6 @@ export default function App() {
         </Route>
 
         <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-      <InstallAppButton />
-    </>
+    </Routes>
   );
 }

@@ -8,7 +8,7 @@ function isStandaloneMode() {
   );
 }
 
-export default function InstallAppButton() {
+export default function InstallAppButton({ variant = 'floating', onDone }) {
   const [promptEvent, setPromptEvent] = useState(null);
   const [installed, setInstalled] = useState(() => isStandaloneMode());
 
@@ -39,11 +39,25 @@ export default function InstallAppButton() {
     const choice = await promptEvent.userChoice;
     if (choice.outcome === 'accepted') {
       setPromptEvent(null);
+      onDone?.();
     }
   };
 
   if (installed || !promptEvent) {
     return null;
+  }
+
+  if (variant === 'menu') {
+    return (
+      <button
+        type="button"
+        onClick={installApp}
+        className="flex w-full items-center gap-3 rounded-xl bg-gradient-to-l from-gold-100 to-rose-100 px-3 py-2 text-sm font-bold text-rose-500 transition hover:opacity-90"
+      >
+        <Download size={18} />
+        <span>تحميل الآن</span>
+      </button>
+    );
   }
 
   return (

@@ -15,6 +15,7 @@ import {
   MoreHorizontal,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import InstallAppButton from './InstallAppButton';
 
 const links = [
   { to: '/', label: 'الرئيسية', icon: LayoutDashboard },
@@ -98,7 +99,7 @@ export default function Layout() {
               onClick={() => setMobileMenuOpen(false)}
             />
 
-            <nav className="absolute bottom-16 left-0 z-50 w-56 overflow-hidden rounded-2xl border border-rose-100 bg-white/95 shadow-soft backdrop-blur">
+            <nav className="absolute bottom-14 left-0 z-50 w-56 overflow-hidden rounded-2xl border border-rose-100 bg-white/95 shadow-soft backdrop-blur">
               <div className="max-h-[70vh] overflow-y-auto p-2">
                 {links.map((l) => (
                   <NavLink
@@ -119,6 +120,10 @@ export default function Layout() {
                   </NavLink>
                 ))}
 
+                <div className="my-1 border-t border-rose-100 pt-1">
+                  <InstallAppButton variant="menu" onDone={() => setMobileMenuOpen(false)} />
+                </div>
+
                 <button
                   type="button"
                   onClick={handleLogout}
@@ -137,9 +142,9 @@ export default function Layout() {
           aria-label={mobileMenuOpen ? 'إغلاق قائمة الإدارة' : 'فتح قائمة الإدارة'}
           aria-expanded={mobileMenuOpen}
           onClick={() => setMobileMenuOpen((open) => !open)}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-l from-gold-400 to-rose-400 text-white shadow-lg transition hover:opacity-90"
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-l from-gold-400 to-rose-400 text-white shadow-lg transition hover:opacity-90"
         >
-          <MoreHorizontal size={26} />
+          <MoreHorizontal size={22} />
         </button>
       </div>
     </div>
