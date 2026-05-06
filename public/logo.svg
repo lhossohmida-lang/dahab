@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Accessories logo">
+  <defs>
+    <linearGradient id="gold" x1="90" y1="90" x2="390" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f6c452"/>
+      <stop offset="0.45" stop-color="#b87908"/>
+      <stop offset="1" stop-color="#f0a21a"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="150" y1="130" x2="290" y2="350" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f9fafb"/>
+      <stop offset="0.36" stop-color="#b6b6aa"/>
+      <stop offset="1" stop-color="#666a70"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="102" y1="95" x2="400" y2="338" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f2a51c"/>
+      <stop offset="0.58" stop-color="#e39a16"/>
+      <stop offset="1" stop-color="#55575d"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#08051d" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="96" fill="#fffdf9"/>
+
+  <g filter="url(#softShadow)">
+    <path d="M255 74a162 162 0 1 0 142 84" fill="none" stroke="url(#ring)" stroke-width="12" stroke-linecap="round"/>
+    <path d="M265 59a179 179 0 0 0-168 232" fill="none" stroke="#dc9214" stroke-width="7" stroke-linecap="round"/>
+    <path d="M369 92a179 179 0 0 1 42 211" fill="none" stroke="#5b5e64" stroke-width="8" stroke-linecap="round"/>
+
+    <path d="M154 361 252 123h42L191 361z" fill="url(#silver)"/>
+    <path d="M252 123h42l115 238h-48l-28-63H223l18-42h73z" fill="url(#gold)"/>
+    <path d="M227 273h87v31h-87z" fill="url(#gold)"/>
+  </g>
+
+  <text
+    x="256"
+    y="455"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="58"
+    font-weight="800"
+    letter-spacing="0"
+    fill="#07043d"
+  >Accessories</text>
+</svg>

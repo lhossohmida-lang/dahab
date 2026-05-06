@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Sparkles, Mail, Lock } from 'lucide-react';
+import { Mail, Lock } from 'lucide-react';
 
 export default function Login() {
   const { user, userRole, loading: authLoading, login, logout } = useAuth();
@@ -32,10 +32,10 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md card">
         <div className="flex flex-col items-center mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-l from-gold-400 to-rose-400 flex items-center justify-center text-white shadow-lg">
-            <Sparkles size={28} />
+          <div className="w-20 h-20 rounded-2xl bg-white shadow-lg ring-1 ring-gold-100 overflow-hidden">
+            <img src="/pwa-icon-192.png" alt="Accessories" className="h-full w-full object-cover" />
           </div>
-          <h1 className="text-2xl font-extrabold text-gold-600 mt-3">دهب</h1>
+          <h1 className="text-2xl font-extrabold text-gold-600 mt-3">Accessories</h1>
           <p className="text-sm text-violet-400">إدارة متجر إكسسوارات البنات</p>
         </div>
 

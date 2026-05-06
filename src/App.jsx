@@ -21,59 +21,63 @@ import StoreLogin from './pages/store/StoreLogin';
 import StoreRegister from './pages/store/StoreRegister';
 import MyOrders from './pages/store/MyOrders';
 import Account from './pages/store/Account';
+import InstallAppButton from './components/InstallAppButton';
 import { CartProvider } from './contexts/CartContext';
 
 export default function App() {
   return (
-    <Routes>
-      {/* Admin Login */}
-      <Route path="/login" element={<Login />} />
+    <>
+      <Routes>
+        {/* Admin Login */}
+        <Route path="/login" element={<Login />} />
 
-      {/* Admin Panel */}
-      <Route
-        element={
-          <ProtectedRoute>
-            <Layout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/sales" element={<Sales />} />
-        <Route path="/online-orders" element={<OnlineOrders />} />
-        <Route path="/invoices" element={<Invoices />} />
-        <Route path="/profits" element={<Profits />} />
-        <Route path="/expenses" element={<Expenses />} />
-        <Route path="/customers" element={<Customers />} />
-        <Route path="/ai-assistant" element={<AiAssistant />} />
-        <Route path="/settings" element={<SettingsPage />} />
-      </Route>
-
-      {/* Online Store (Public + Customer) */}
-      <Route
-        path="/store"
-        element={
-          <CartProvider>
-            <StoreLayout />
-          </CartProvider>
-        }
-      >
-        <Route index element={<StoreFront />} />
-        <Route path="cart" element={<Cart />} />
-        <Route path="checkout" element={<Checkout />} />
-        <Route path="login" element={<StoreLogin />} />
-        <Route path="register" element={<StoreRegister />} />
+        {/* Admin Panel */}
         <Route
-          path="orders"
-          element={<CustomerRoute><MyOrders /></CustomerRoute>}
-        />
-        <Route
-          path="account"
-          element={<CustomerRoute><Account /></CustomerRoute>}
-        />
-      </Route>
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/sales" element={<Sales />} />
+          <Route path="/online-orders" element={<OnlineOrders />} />
+          <Route path="/invoices" element={<Invoices />} />
+          <Route path="/profits" element={<Profits />} />
+          <Route path="/expenses" element={<Expenses />} />
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/ai-assistant" element={<AiAssistant />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Route>
 
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+        {/* Online Store (Public + Customer) */}
+        <Route
+          path="/store"
+          element={
+            <CartProvider>
+              <StoreLayout />
+            </CartProvider>
+          }
+        >
+          <Route index element={<StoreFront />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="login" element={<StoreLogin />} />
+          <Route path="register" element={<StoreRegister />} />
+          <Route
+            path="orders"
+            element={<CustomerRoute><MyOrders /></CustomerRoute>}
+          />
+          <Route
+            path="account"
+            element={<CustomerRoute><Account /></CustomerRoute>}
+          />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+      <InstallAppButton />
+    </>
   );
 }

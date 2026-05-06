@@ -1,5 +1,5 @@
 import { NavLink, Outlet, Link } from 'react-router-dom';
-import { ShoppingBag, User, LogOut, Sparkles, Store, ClipboardList, Shield } from 'lucide-react';
+import { ShoppingBag, User, LogOut, Store, ClipboardList, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 
@@ -14,10 +14,10 @@ export default function StoreLayout() {
       <header className="bg-white/90 backdrop-blur border-b border-rose-100 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/store" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-l from-gold-400 to-rose-400 flex items-center justify-center text-white">
-              <Sparkles size={18} />
+            <div className="w-9 h-9 rounded-xl bg-white shadow-sm ring-1 ring-gold-100 overflow-hidden">
+              <img src="/pwa-icon-192.png" alt="Accessories" className="h-full w-full object-cover" />
             </div>
-            <span className="font-extrabold text-gold-600 text-lg">دهب</span>
+            <span className="font-extrabold text-gold-600 text-lg">Accessories</span>
           </Link>
 
           <nav className="flex items-center gap-3">

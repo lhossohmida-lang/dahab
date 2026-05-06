@@ -10,7 +10,6 @@ import {
   Users,
   Settings,
   LogOut,
-  Sparkles,
   Globe,
   Bot,
   MoreHorizontal,
@@ -46,11 +45,11 @@ export default function Layout() {
       {/* Sidebar - Desktop */}
       <aside className="hidden md:flex flex-col w-64 bg-white/80 backdrop-blur border-l border-rose-100 p-4 sticky top-0 h-screen">
         <div className="flex items-center gap-2 mb-8 p-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-l from-gold-400 to-rose-400 flex items-center justify-center text-white">
-            <Sparkles size={20} />
+          <div className="w-10 h-10 rounded-xl bg-white shadow-sm ring-1 ring-gold-100 overflow-hidden">
+            <img src="/pwa-icon-192.png" alt="Accessories" className="h-full w-full object-cover" />
           </div>
           <div>
-            <div className="font-extrabold text-gold-600">دهب</div>
+            <div className="font-extrabold text-gold-600">Accessories</div>
             <div className="text-xs text-violet-400">إدارة متجر الإكسسوارات</div>
           </div>
         </div>
