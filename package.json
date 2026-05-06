@@ -8,6 +8,7 @@
     "build": "vite build",
     "server": "node server.js",
     "start": "node server.js",
+    "deploy:check": "node --check server.js && node --check api/ai-chat.js && npm run build",
     "preview": "vite preview"
   },
   "dependencies": {
