@@ -2,7 +2,7 @@
   "name": "Accessories - إدارة المتجر",
   "short_name": "Accessories",
   "description": "تطبيق إدارة متجر الإكسسوارات والمخزون والفواتير والزبائن والمبيعات أونلاين.",
-  "start_url": "/login",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "dir": "rtl",

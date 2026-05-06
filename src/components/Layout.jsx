@@ -15,7 +15,6 @@ import {
   MoreHorizontal,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import InstallAppButton from './InstallAppButton';
 
 const links = [
   { to: '/', label: 'الرئيسية', icon: LayoutDashboard },
@@ -119,10 +118,6 @@ export default function Layout() {
                     <span>{l.label}</span>
                   </NavLink>
                 ))}
-
-                <div className="my-1 border-t border-rose-100 pt-1">
-                  <InstallAppButton variant="menu" onDone={() => setMobileMenuOpen(false)} />
-                </div>
 
                 <button
                   type="button"

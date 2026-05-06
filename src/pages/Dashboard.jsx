@@ -8,6 +8,7 @@ import {
 import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid,
 } from 'recharts';
+import InstallAppButton from '../components/InstallAppButton';
 
 function StatCard({ icon: Icon, label, value, color = 'gold' }) {
   const palette = {
@@ -94,9 +95,12 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-extrabold text-gold-700">لوحة التحكم</h1>
-        <p className="text-violet-400 text-sm">نظرة عامة على أداء المتجر</p>
+      <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-start">
+        <div>
+          <h1 className="text-2xl font-extrabold text-gold-700">لوحة التحكم</h1>
+          <p className="text-violet-400 text-sm">نظرة عامة على أداء المتجر</p>
+        </div>
+        <InstallAppButton variant="dashboard" />
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
