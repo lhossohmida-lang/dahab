@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -12,6 +13,7 @@ import {
   Sparkles,
   Globe,
   Bot,
+  MoreHorizontal,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -31,9 +33,11 @@ const links = [
 export default function Layout() {
   const { logout, user } = useAuth();
   const nav = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
+    setMobileMenuOpen(false);
     nav('/login');
   };
 
@@ -80,34 +84,65 @@ export default function Layout() {
       </aside>
 
       {/* Main */}
-      <main className="flex-1 p-4 md:p-8 pb-24 md:pb-8 max-w-full overflow-x-hidden">
+      <main className="flex-1 p-4 md:p-8 pb-20 md:pb-8 max-w-full overflow-x-hidden">
         <Outlet />
       </main>
 
-      {/* Bottom Nav - Mobile */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-rose-100 z-40">
-        <div className="flex justify-around overflow-x-auto">
-          {links.slice(0, 5).map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              end={l.to === '/'}
-              className={({ isActive }) =>
-                `flex flex-col items-center gap-0.5 py-2 px-3 text-[11px] font-bold ${
-                  isActive ? 'text-rose-500' : 'text-violet-400'
-                }`
-              }
-            >
-              <l.icon size={20} />
-              <span>{l.label}</span>
-            </NavLink>
-          ))}
-          <button onClick={handleLogout} className="flex flex-col items-center gap-0.5 py-2 px-3 text-[11px] font-bold text-rose-400">
-            <LogOut size={20} />
-            <span>خروج</span>
-          </button>
-        </div>
-      </nav>
+      {/* Floating Menu - Mobile */}
+      <div className="md:hidden fixed bottom-4 left-4 z-50">
+        {mobileMenuOpen && (
+          <>
+            <button
+              type="button"
+              aria-label="إغلاق القائمة"
+              className="fixed inset-0 z-40 bg-transparent"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+
+            <nav className="absolute bottom-16 left-0 z-50 w-56 overflow-hidden rounded-2xl border border-rose-100 bg-white/95 shadow-soft backdrop-blur">
+              <div className="max-h-[70vh] overflow-y-auto p-2">
+                {links.map((l) => (
+                  <NavLink
+                    key={l.to}
+                    to={l.to}
+                    end={l.to === '/'}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-bold transition ${
+                        isActive
+                          ? 'bg-gradient-to-l from-gold-100 to-rose-100 text-rose-500'
+                          : 'text-violet-500 hover:bg-rose-50'
+                      }`
+                    }
+                  >
+                    <l.icon size={18} />
+                    <span>{l.label}</span>
+                  </NavLink>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-bold text-rose-500 hover:bg-rose-50"
+                >
+                  <LogOut size={18} />
+                  <span>تسجيل الخروج</span>
+                </button>
+              </div>
+            </nav>
+          </>
+        )}
+
+        <button
+          type="button"
+          aria-label={mobileMenuOpen ? 'إغلاق قائمة الإدارة' : 'فتح قائمة الإدارة'}
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-l from-gold-400 to-rose-400 text-white shadow-lg transition hover:opacity-90"
+        >
+          <MoreHorizontal size={26} />
+        </button>
+      </div>
     </div>
   );
 }
