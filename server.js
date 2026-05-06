@@ -4,8 +4,9 @@ import { fileURLToPath } from 'node:url';
 
 const app = express();
 const port = process.env.PORT || 3001;
-const ollamaUrl = process.env.OLLAMA_URL || 'http://localhost:11434/api/chat';
-const ollamaModel = process.env.OLLAMA_MODEL || 'gemma4:e2b';
+const geminiApiKey = process.env.GEMINI_API_KEY || '';
+const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent`;
 const firebaseProjectId = process.env.FIREBASE_PROJECT_ID || 'deheb-5ac6b';
 const firestoreBaseUrl = `https://firestore.googleapis.com/v1/projects/${firebaseProjectId}/databases/(default)/documents`;
 
@@ -31,6 +32,27 @@ function cleanHistory(history) {
     }))
     .filter((message) => message.content)
     .slice(-12);
+}
+
+function toGeminiContents(history, message) {
+  return [
+    ...cleanHistory(history).map((item) => ({
+      role: item.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: item.content }],
+    })),
+    {
+      role: 'user',
+      parts: [{ text: message }],
+    },
+  ];
+}
+
+function extractGeminiReply(data) {
+  return (data?.candidates || [])
+    .flatMap((candidate) => candidate?.content?.parts || [])
+    .map((part) => part?.text || '')
+    .join('\n')
+    .trim();
 }
 
 function readBearerToken(req) {
@@ -272,7 +294,76 @@ async function getDatabaseContext(token) {
   return buildDatabaseContext({ products, sales, expenses, customers, onlineOrders, settings });
 }
 
-app.post('/api/ai-chat', async (req, res) => {
+app.post('/api/ai-chat', async (req, res, next) => {
+  const message = String(req.body?.message || '').trim();
+
+  if (!message) {
+    return res.status(400).json({ error: 'اكتب سؤالًا قبل الإرسال.' });
+  }
+
+  if (!geminiApiKey) {
+    return res.status(500).json({
+      error: 'لم يتم ضبط مفتاح Gemini API. أضف GEMINI_API_KEY في متغيرات البيئة على السيرفر.',
+    });
+  }
+
+  let databaseContext;
+  try {
+    databaseContext = await getDatabaseContext(readBearerToken(req));
+  } catch (error) {
+    return res.status(503).json({
+      error: `تعذر ربط مساعد AI بقاعدة البيانات: ${error.message}`,
+    });
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 60000);
+
+  try {
+    const geminiResponse = await fetch(geminiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': geminiApiKey,
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        system_instruction: {
+          parts: [{ text: `${systemPrompt}\n\n${databaseContext}` }],
+        },
+        contents: toGeminiContents(req.body?.history, message),
+      }),
+    });
+
+    if (!geminiResponse.ok) {
+      const details = await geminiResponse.text().catch(() => '');
+      return res.status(502).json({
+        error: 'تعذر الحصول على رد من Gemini. تأكد من صحة GEMINI_API_KEY واسم الموديل.',
+        details: details.slice(0, 500),
+      });
+    }
+
+    const data = await geminiResponse.json();
+    const reply = extractGeminiReply(data);
+
+    if (!reply) {
+      return res.status(502).json({ error: 'Gemini لم يرجع ردًا صالحًا.' });
+    }
+
+    return res.json({ reply });
+  } catch (error) {
+    const isTimeout = error?.name === 'AbortError';
+    return res.status(503).json({
+      error: isTimeout
+        ? 'انتهت مهلة انتظار Gemini. حاول مرة أخرى.'
+        : 'تعذر الاتصال بـ Gemini API. تأكد من الإنترنت ومفتاح GEMINI_API_KEY.',
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+});
+
+app.post('/api/ai-chat-ollama-disabled', async (req, res) => {
   const message = String(req.body?.message || '').trim();
 
   if (!message) {
