@@ -1,9 +1,9 @@
 {
-  "name": "Accessories - إدارة المتجر",
+  "name": "Accessories - متجر الزبائن",
   "short_name": "Accessories",
-  "id": "/admin",
-  "description": "تطبيق إدارة متجر الإكسسوارات والمخزون والفواتير والزبائن والمبيعات أونلاين.",
-  "start_url": "/",
+  "id": "/store",
+  "description": "تطبيق متجر Accessories للزبائن لتصفح المنتجات والطلب أونلاين.",
+  "start_url": "/store",
   "scope": "/",
   "display": "standalone",
   "dir": "rtl",
@@ -11,7 +11,7 @@
   "orientation": "portrait",
   "theme_color": "#d49116",
   "background_color": "#fff7ed",
-  "categories": ["business", "shopping", "productivity"],
+  "categories": ["shopping"],
   "icons": [
     {
       "src": "/pwa-icon-192.png",

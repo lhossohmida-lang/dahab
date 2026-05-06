@@ -2,6 +2,7 @@ import { NavLink, Outlet, Link } from 'react-router-dom';
 import { ShoppingBag, User, LogOut, Store, ClipboardList, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
+import InstallAppButton from './InstallAppButton';
 
 export default function StoreLayout() {
   const { user, userRole, logout, userData } = useAuth();
@@ -58,6 +59,9 @@ export default function StoreLayout() {
 
       {/* Content */}
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
+        <div className="mb-4">
+          <InstallAppButton variant="store" />
+        </div>
         <Outlet />
       </main>
 

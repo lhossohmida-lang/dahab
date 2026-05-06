@@ -8,12 +8,29 @@ function isStandaloneMode() {
   );
 }
 
+function updateManifest(variant) {
+  const href = variant === 'store' ? '/manifest-store.webmanifest' : '/manifest.webmanifest';
+  let manifest = document.querySelector('link[rel="manifest"]');
+
+  if (!manifest) {
+    manifest = document.createElement('link');
+    manifest.rel = 'manifest';
+    document.head.appendChild(manifest);
+  }
+
+  if (manifest.getAttribute('href') !== href) {
+    manifest.setAttribute('href', href);
+  }
+}
+
 export default function InstallAppButton({ variant = 'floating', onDone }) {
   const [promptEvent, setPromptEvent] = useState(null);
   const [installed, setInstalled] = useState(() => isStandaloneMode());
   const [fallbackMessage, setFallbackMessage] = useState('');
 
   useEffect(() => {
+    updateManifest(variant);
+
     const onBeforeInstallPrompt = (event) => {
       event.preventDefault();
       setPromptEvent(event);
@@ -31,7 +48,7 @@ export default function InstallAppButton({ variant = 'floating', onDone }) {
       window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
       window.removeEventListener('appinstalled', onInstalled);
     };
-  }, []);
+  }, [variant]);
 
   const installApp = async () => {
     if (!promptEvent) {
@@ -62,6 +79,35 @@ export default function InstallAppButton({ variant = 'floating', onDone }) {
             <div>
               <div className="text-sm font-extrabold text-gold-700">تحميل تطبيق الإدارة</div>
               <div className="text-xs font-semibold text-violet-400">ثبّت التطبيق على الهاتف لفتح لوحة الإدارة بسرعة</div>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={installApp}
+            className="btn-primary h-11 shrink-0 px-4"
+          >
+            <Download size={18} />
+            <span>تحميل الآن</span>
+          </button>
+        </div>
+        {fallbackMessage && (
+          <p className="mt-2 text-xs font-semibold text-rose-500">{fallbackMessage}</p>
+        )}
+      </div>
+    );
+  }
+
+  if (variant === 'store') {
+    return (
+      <div className="rounded-2xl border border-gold-100 bg-white/80 p-3 shadow-soft">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-white ring-1 ring-gold-100">
+              <img src="/pwa-icon-192.png" alt="Accessories" className="h-full w-full object-cover" />
+            </div>
+            <div>
+              <div className="text-sm font-extrabold text-gold-700">تحميل تطبيق المتجر</div>
+              <div className="text-xs font-semibold text-violet-400">ثبّت واجهة الزبائن لفتح المتجر مباشرة</div>
             </div>
           </div>
           <button
